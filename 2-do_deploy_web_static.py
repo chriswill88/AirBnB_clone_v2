@@ -41,15 +41,13 @@ def do_deploy(archive_path):
         operations.run('rm {}'.format(tempfile))
 
         # delete symbolic link
-        pathy = '/data/web_static/releases/{}/web_static'.format(mid)
         operations.run(
-            'mv {}/* /data/web_static/releases/{0}/'.format(pathy, mid))
+            'mv /data/web_static/releases/{0}/web_static/* /data/web_static/releases/{0}/'.format(mid))
         operations.run(
             'rm -rf /data/web_static/releases/{}/web_static'.format(mid))
-        current = '/data/web_static/current'
-        operations.run('rm -rf {}'.format(current))
+        operations.run('rm -rf /data/web_static/current')
         operations.run(
-            'ln -s /data/web_static/releases/{}/ {}'.format(mid, current))
+            'ln -s /data/web_static/releases/{}/ /data/web_static/current'.format(mid))
         print("New version deployed!")
         return True
     except Exception:
