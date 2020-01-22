@@ -20,7 +20,8 @@ def hbnb():
 @app.route('/c/<text>')
 def cisfun(text):
     """Function for Flask Web Application"""
-    return 'c {}'.format(text.replace("_", " "))
+    text = text.replace("_", " ")
+    return 'c {}'.format(text)
 
 
 if __name__ == "__main__":
