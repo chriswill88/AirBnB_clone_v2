@@ -33,7 +33,7 @@ def pisfun(text="is_cool"):
 @app.route('/number/<int:n>')
 def numfun(n):
     """Function for Flask Web Application"""
-    return 'Python {}'.format(n)
+    return '{} is a number'.format(n)
 
 
 if __name__ == "__main__":
