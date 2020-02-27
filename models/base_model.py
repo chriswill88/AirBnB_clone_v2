@@ -16,13 +16,16 @@ class BaseModel:
     id = Column(  # jfk added these class attributes
         String(60),
         primary_key=True,
-        unique=True
-        )
+        unique=True,
+        nullable=False
+    )
+
     created_at = Column(
         DateTime,
         nullable=False,
         default=datetime.utcnow()
     )
+
     updated_at = Column(
         DateTime,
         nullable=False,
@@ -40,8 +43,7 @@ class BaseModel:
             updated_at: updated date
         """
         self.id = str(uuid.uuid4())
-        self.created_at = datetime.utcnow()
-        self.updated_at = datetime.utcnow()
+        self.created_at = self.updated_at = datetime.utcnow()
 
         if kwargs:
             for key, value in kwargs.items():
@@ -103,8 +105,10 @@ class BaseModel:
         my_dict["__class__"] = str(type(self).__name__)
         my_dict["created_at"] = self.created_at.isoformat()
         my_dict["updated_at"] = self.updated_at.isoformat()
-        if my_dict["_sa_instance_state"]:
+        try:
             del my_dict["_sa_instance_state"]
+        except Exception:
+            pass
         return my_dict
 
     def delete(self):

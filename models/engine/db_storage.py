@@ -11,6 +11,7 @@ from models.state import State
 from models.user import User
 from models.amenity import Amenity
 from models.city import City
+import os
 
 
 class DBStorage:
@@ -24,29 +25,27 @@ class DBStorage:
                 getenv('HBNB_MYSQL_HOST'),
                 getenv('HBNB_MYSQL_DB')),
                 pool_pre_ping=True)
-        Base.metadata.create_all(self.__engine)
+        # Base.metadata.create_all(self.__engine)
+        self.reload()
+        if 'test' in os.environ and os.environ['HBNB_ENV'] == 'test':
+            Base.metadata.drop_all(self.__engine)
 
-
-        if getenv('HBNB_ENV') == "test":
-            Base.metadata.drop_all()
-
-    def all(self, cls=None):  #JFK added =none
+    def all(self, cls=None):  # JFK added =none
         dic = {}
+        a = 0
         if cls is None:
-            query = self.__session.query(
-                User,
-                State,
-                City,
-                Amenity,
-                Place,
-                Review
-            )
+            query_list = [User, State, City, Amenity, Place, Review]
+            for i in query_list:
+                for x in self.__session.query(i):
+                    # print(a, "----->>", x)
+                    a += 1
+                    dic["{}.{}".format(type(x).__name__, x.id)] = x
+
         else:
             query = self.__session.query(cls)
-        for a in query:
-            key = "{}.{}".format(type(a).__name__, a.id)  # JFK: removed <> around {}
-            value = a
-            dic[key] = value
+            for a in query:
+                key = "{}.{}".format(type(a).__name__, a.id)
+                dic[key] = a
         return dic
 
     def new(self, obj):
@@ -66,3 +65,6 @@ class DBStorage:
             expire_on_commit=False)
         Session = scoped_session(sessionista)
         self.__session = Session()
+
+    def close(self):
+        self.__engine.remove()

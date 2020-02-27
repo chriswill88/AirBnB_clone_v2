@@ -13,6 +13,4 @@ class City(BaseModel, Base):
     """
     __tablename__ = 'cities'
     name = Column(String(128), nullable=False)
-
-    # JFK. single, double or no quotes?
     state_id = Column(String(60), ForeignKey('states.id'), nullable=False)

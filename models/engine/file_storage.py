@@ -28,11 +28,14 @@ class FileStorage:
         """
         dic = {}
         ob = self.__objects
-
-        for i in ob.keys():
-            dic[i] = ob[i]
-
-        return dic
+        if cls:
+            print('TRUE')
+            for i in ob.keys():
+                print("from file_storage --> k:{} v:{}".format(i, ob[i]))
+                if isinstance(ob[i], cls):
+                    dic[i] = ob[i]
+            return dic
+        return ob
 
     def new(self, obj):
         """sets __object to given obj
