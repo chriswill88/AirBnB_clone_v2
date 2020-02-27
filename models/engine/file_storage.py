@@ -20,6 +20,9 @@ class FileStorage:
     __file_path = "file.json"
     __objects = {}
 
+    def close(self):
+        self.reload()
+
     def all(self, cls=None):
         """returns a dictionary
         Return:
@@ -29,10 +32,11 @@ class FileStorage:
         dic = {}
         ob = self.__objects
         if cls:
-            print('TRUE')
+            # print('TRUE')
             for i in ob.keys():
-                print("from file_storage --> k:{} v:{}".format(i, ob[i]))
-                if isinstance(ob[i], cls):
+                # print("from file_storage --> k:{} v:{}".format(i, ob[i]))
+                objects = ob[i]
+                if isinstance(objects, type(cls)):
                     dic[i] = ob[i]
             return dic
         return ob
