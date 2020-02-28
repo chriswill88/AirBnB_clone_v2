@@ -13,12 +13,13 @@ class State(BaseModel, Base):
         name: input name
     """
     __tablename__ = 'states'
-    name = Column(String(128), nullable=False)
-    # Use cascade="all, delete" here or on FK constraint in cities??
-    # Does it matter where you use single or double quotes?
-    # cities = relationship("City", cascade="all, delete", backref="state")
-    cities = relationship("City", backref="state")
-    if os.getenv('HBNB_TYPE_STORAGE') != 'db':
+    if os.getenv('HBNB_TYPE_STORAGE') == 'db':
+        name = Column(String(128), nullable=False)
+        # Use cascade="all, delete" here or on FK constraint in cities??
+        # Does it matter where you use single or double quotes?
+        # cities = relationship("City", cascade="all, delete", backref="state")
+        cities = relationship("City", backref="state")
+    else:
         @property
         def cities(self):
             """getter:
@@ -27,10 +28,16 @@ class State(BaseModel, Base):
             to find city objects that
             have the same state id
             """
-            cities = models.storage.all('City')
+            city = models.storage.all()
+            # print("in state.py!!!", city)
             listy = []
-            for obj in cities.values():
-                print("state.py --> id == {}, obj == {}".format(self.id, obj))
-                if self.id == obj.state_id:
-                    listy.append(obj)
+            for k, v in city.items():
+                val = v.to_dict()
+                if 'state_id' in val and val['state_id']:
+                    if val['state_id'] == self.id:
+                        listy.append(v)
+                    # print("state.py --> id == {} \nstate.py ---> obj == {}".format(k, v['state_id']))
+
+                # if self.id == obj.state_id:
+                #     listy.append(obj)
             return listy

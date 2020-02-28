@@ -36,8 +36,12 @@ class FileStorage:
             for i in ob.keys():
                 # print("from file_storage --> k:{} v:{}".format(i, ob[i]))
                 objects = ob[i]
-                if isinstance(objects, type(cls)):
+                # print(type(objects))
+                # print(cls)
+                if type(objects) is cls:
+                    # print("instance found!!")
                     dic[i] = ob[i]
+            # print("dic ->>>>>>|>>>", dic)
             return dic
         return ob
 
