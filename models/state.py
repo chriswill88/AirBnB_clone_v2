@@ -36,7 +36,6 @@ class State(BaseModel, Base):
                 if 'state_id' in val and val['state_id']:
                     if val['state_id'] == self.id:
                         listy.append(v)
-                    # print("state.py --> id == {} \nstate.py ---> obj == {}".format(k, v['state_id']))
 
                 # if self.id == obj.state_id:
                 #     listy.append(obj)
