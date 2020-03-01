@@ -8,11 +8,6 @@ app = Flask(__name__)
 app.url_map.strict_slashes = False
 
 
-@app.teardown_appcontext
-def teardown(self):
-    storage.close()
-
-
 @app.route('/states_list')
 def state_():
     """Function for Flask Web Application"""
@@ -26,6 +21,11 @@ def state_():
         states[id] = name
         # print("states ->>>>>", states)
     return render_template('7-states_list.html', nom="States", states=states)
+
+
+@app.teardown_appcontext
+def teardown(self):
+    storage.close()
 
 
 if __name__ == "__main__":
