@@ -34,8 +34,9 @@ class DBStorage:
     def all(self, cls=None):  # JFK added =none
         dic = {}
         a = 0
+        query_list = [User, State, City, Amenity, Place, Review]
         if cls is None:
-            query_list = [User, State, City, Amenity, Place, Review]
+            # print("db storage - no class")
             for i in query_list:
                 for x in self.__session.query(i):
                     # print(a, "----->>", x)
@@ -43,10 +44,17 @@ class DBStorage:
                     dic["{}.{}".format(type(x).__name__, x.id)] = x
 
         else:
-            query = self.__session.query(cls)
-            for a in query:
-                key = "{}.{}".format(type(a).__name__, a.id)
-                dic[key] = a
+            # print("db storage - class", type(cls), query_list)
+            for i in query_list:
+                # print("i -->", i.__name__, cls)
+                if i.__name__ == cls:
+                    # print("found")
+                    cls = i
+                    break
+            for lol in self.__session.query(cls):
+                # print("A is ", lol)
+                key = "{}.{}".format(type(lol).__name__, lol.id)
+                dic[key] = lol
         return dic
 
     def new(self, obj):

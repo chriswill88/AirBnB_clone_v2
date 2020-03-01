@@ -32,7 +32,7 @@ class FileStorage:
         dic = {}
         ob = self.__objects
         if cls:
-            # print('TRUE')
+            # print('file_storage - cls given')
             for i in ob.keys():
                 # print("from file_storage --> k:{} v:{}".format(i, ob[i]))
                 objects = ob[i]
