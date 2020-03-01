@@ -25,7 +25,7 @@ def state_():
         # print(name, name_of)
         states[id] = name
         # print("states ->>>>>", states)
-    return render_template('7-states_list.html', states=states)
+    return render_template('7-states_list.html', nom="States", states=states)
 
 
 if __name__ == "__main__":
